@@ -1,0 +1,35 @@
+.skeleton {
+  background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-background) 50%, var(--color-surface) 75%);
+  background-size: 200% 100%;
+  animation: loading 2s infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.product-card-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+}
+
+.skeleton-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.text-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

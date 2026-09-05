@@ -1,0 +1,235 @@
+.ai-search-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ai-search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: 50px;
+  padding: 10px 16px;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.ai-search-bar:focus-within {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.1);
+}
+
+.search-icon {
+  color: var(--color-textSecondary);
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--color-text);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.search-input::placeholder {
+  color: var(--color-textSecondary);
+}
+
+.search-loader {
+  color: var(--color-secondary);
+  animation: spin 1s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.clear-search {
+  background: none;
+  border: none;
+  color: var(--color-textSecondary);
+  cursor: pointer;
+  font-size: 24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.clear-search:hover {
+  color: var(--color-text);
+}
+
+.ai-search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-height: 500px;
+  overflow-y: auto;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-section {
+  border-bottom: 1px solid var(--color-border);
+  padding: 8px 0;
+}
+
+.search-section:last-child {
+  border-bottom: none;
+}
+
+.section-title {
+  padding: 8px 16px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-textSecondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.suggestions-list,
+.history-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestion-item,
+.history-item {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 14px;
+  text-align: left;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.suggestion-item:hover,
+.history-item:hover {
+  background-color: var(--color-background);
+}
+
+.suggestion-item svg,
+.history-item svg {
+  color: var(--color-textSecondary);
+  flex-shrink: 0;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.result-item {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.result-item:hover {
+  background-color: var(--color-background);
+}
+
+.result-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.result-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.result-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result-price {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+.result-rating {
+  margin: 2px 0 0 0;
+  font-size: 11px;
+  color: var(--color-textSecondary);
+}
+
+.search-score {
+  display: flex;
+  align-items: center;
+  color: var(--color-secondary);
+  flex-shrink: 0;
+}
+
+.no-results {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--color-textSecondary);
+}
+
+.no-results p {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+}
+
+.no-results p:last-child {
+  font-size: 12px;
+  opacity: 0.7;
+}
