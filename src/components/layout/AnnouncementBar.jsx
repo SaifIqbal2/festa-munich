@@ -8,7 +8,7 @@ export default function AnnouncementBar() {
   return (
     <div className="zegna-top-bar">
       {/* Left: Headline Announcement */}
-      <div>
+      <div className="announcement-message">
         <span>ELEVATE YOUR SHOPPING EXPERIENCE. </span>
         <a 
           href={BRAND_INFO.whatsappLink}
@@ -21,7 +21,7 @@ export default function AnnouncementBar() {
       </div>
 
       {/* Right: Order tracking and currency selector */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+      <div className="announcement-tools" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
         <button
           onClick={() => setIsOrderTrackingOpen(true)}
           style={{ textTransform: 'uppercase' }}
@@ -32,7 +32,7 @@ export default function AnnouncementBar() {
         <span>|</span>
 
         {/* Currency & Region Selector */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+        <div className="announcement-region" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <span>REST OF THE WORLD - {currency}</span>
           <select
             value={currency}

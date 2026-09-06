@@ -43,6 +43,7 @@ export default function HeroBanner({ onExploreCatalog }) {
       }}
     >
       <div 
+        className="hero-banner-backdrop"
         style={{
           position: 'absolute',
           inset: 0,
@@ -64,7 +65,7 @@ export default function HeroBanner({ onExploreCatalog }) {
           width: '100%'
         }}
       >
-        <div className="hero-banner-kicker" style={{ marginBottom: '0.7rem', fontSize: '0.75rem', letterSpacing: '0.22em', color: '#f5f5f5', textTransform: 'uppercase', opacity: 0.9 }}>
+        <div className="hero-banner-kicker hero-reveal hero-reveal-1" style={{ marginBottom: '0.7rem', fontSize: '0.75rem', letterSpacing: '0.22em', color: '#f5f5f5', textTransform: 'uppercase', opacity: 0.9 }}>
           Atelier Collection
         </div>
 
@@ -86,12 +87,12 @@ export default function HeroBanner({ onExploreCatalog }) {
         </h1>
 
         {slide.subtitle && (
-          <p className="hero-banner-subtitle" style={{ color: '#f5f5f5', fontSize: '0.9rem', letterSpacing: '0.03em', margin: '0 auto 1.2rem', maxWidth: '640px', opacity: 0.9, lineHeight: 1.6 }}>
+          <p className="hero-banner-subtitle hero-reveal hero-reveal-3" style={{ color: '#f5f5f5', fontSize: '0.9rem', letterSpacing: '0.03em', margin: '0 auto 1.2rem', maxWidth: '640px', opacity: 0.9, lineHeight: 1.6 }}>
             {slide.subtitle}
           </p>
         )}
 
-        <div className="hero-banner-actions" style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <div className="hero-banner-actions hero-reveal hero-reveal-4" style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
           <button
             className="hero-banner-button btn-zegna-white"
             onClick={() => {
