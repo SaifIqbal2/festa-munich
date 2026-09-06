@@ -9,7 +9,7 @@ export default function ProductFormModal({ product, isOpen, onClose, onSave }) {
   const [formData, setFormData] = useState({
     title: '',
     subtitle: '',
-    category: categories[0]?.name || 'Leather Jackets',
+    category: categories[0]?.name || '',
     price: '',
     compare_at_price: '',
     material: '',
@@ -77,7 +77,7 @@ export default function ProductFormModal({ product, isOpen, onClose, onSave }) {
   useEffect(() => {
     if (!isOpen) return;
 
-    const fallbackCategory = categories[0]?.name || 'Leather Jackets';
+    const fallbackCategory = categories[0]?.name || '';
 
     if (product) {
       setFormData({

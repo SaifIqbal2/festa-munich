@@ -2,35 +2,8 @@ import React from 'react';
 import { useShop } from '../../context/ShopContext';
 import { ArrowRight } from 'lucide-react';
 
-const CATEGORY_ITEMS = [
-  {
-    title: "Handcrafted Leather Jackets",
-    category: "Leather Jackets",
-    subtitle: "Full-Grain Calfskin & Tuscan Lambskin",
-    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=900&auto=format&fit=crop"
-  },
-  {
-    title: "Textile & Cashmere Coats",
-    category: "Textile Outerwear",
-    subtitle: "Mongolian Cashmere & Virgin Wool",
-    image: "https://images.unsplash.com/photo-1539533018447-63fcce667883?q=80&w=900&auto=format&fit=crop"
-  },
-  {
-    title: "Sartorial Tailoring & Blazers",
-    category: "Tailoring & Blazers",
-    subtitle: "Silk-Wool Weave & Neapolitan Shoulders",
-    image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=900&auto=format&fit=crop"
-  },
-  {
-    title: "Leather Goods & Driving Accessories",
-    category: "Accessories & Bags",
-    subtitle: "Saddle Leather Weekenders & Deerskin Gloves",
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=900&auto=format&fit=crop"
-  }
-];
-
 export default function CategoryGrid({ onExploreCatalog }) {
-  const { setActiveCategory } = useShop();
+  const { categories, setActiveCategory } = useShop();
 
   const handleSelect = (categoryName) => {
     setActiveCategory(categoryName);
@@ -55,9 +28,9 @@ export default function CategoryGrid({ onExploreCatalog }) {
 
         {/* 4 Cards Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-          {CATEGORY_ITEMS.map((item, idx) => (
+          {categories.map((item) => (
             <div
-              key={idx}
+              key={item.id || item.name}
               onClick={() => handleSelect(item.category)}
               style={{
                 position: 'relative',
@@ -81,8 +54,8 @@ export default function CategoryGrid({ onExploreCatalog }) {
             >
               {/* Background Image */}
               <img 
-                src={item.image} 
-                alt={item.title} 
+                src={item.image_url}
+                alt={item.name}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -106,11 +79,11 @@ export default function CategoryGrid({ onExploreCatalog }) {
                 }}
               >
                 <div className="luxury-eyebrow" style={{ fontSize: '0.65rem', marginBottom: '0.3rem' }}>
-                  {item.subtitle}
+                  {item.description || 'Festa Munich collection'}
                 </div>
 
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.45rem', color: '#fff', lineHeight: 1.2, marginBottom: '1rem' }}>
-                  {item.title}
+                  {item.name}
                 </h3>
 
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#c89d66', fontSize: '0.78rem', fontWeight: '600', letterSpacing: '0.1em' }}>

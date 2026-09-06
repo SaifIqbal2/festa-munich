@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useShop } from '../../context/ShopContext';
-import { BRAND_INFO, CATEGORIES } from '../../data/initialProducts';
+import { BRAND_INFO } from '../../data/initialProducts';
 import { Mail, Phone, MapPin, CheckCircle2 } from 'lucide-react';
 
 export default function Footer({ onNavigateSection }) {
   const navigate = useNavigate();
-  const { setActiveCategory, showToast, setIsOrderTrackingOpen } = useShop();
+  const { categories, setActiveCategory, showToast, setIsOrderTrackingOpen } = useShop();
   const [emailInput, setEmailInput] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -65,10 +65,10 @@ export default function Footer({ onNavigateSection }) {
               COLLECTIONS
             </div>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.86rem' }}>
-              {CATEGORIES.map((cat) => (
-                <li key={cat}>
+              {categories.map((cat) => (
+                <li key={cat.id || cat.name}>
                   <button
-                    onClick={() => handleCategoryClick(cat)}
+                    onClick={() => handleCategoryClick(cat.name)}
                     style={{
                       background: 'none',
                       border: 'none',
@@ -80,7 +80,7 @@ export default function Footer({ onNavigateSection }) {
                     onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
                     onMouseLeave={(e) => e.currentTarget.style.color = '#aaaaaa'}
                   >
-                    {cat}
+                    {cat.name}
                   </button>
                 </li>
               ))}
