@@ -397,10 +397,25 @@ const {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {CATEGORIES.map((cat) => (
+            <button
+              onClick={() => handleCategorySelect('All Garments')}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '1.2rem',
+                fontFamily: 'var(--font-sans)',
+                textAlign: 'left',
+                cursor: 'pointer',
+                fontWeight: activeCategory === 'All Garments' ? '700' : '400',
+                color: '#000'
+              }}
+            >
+              All Garments
+            </button>
+            {categories.map((category) => (
               <button
-                key={cat}
-                onClick={() => handleCategorySelect(cat)}
+                key={category.id || category.name}
+                onClick={() => handleCategorySelect(category.name)}
                 style={{
                   background: 'none',
                   border: 'none',
@@ -408,11 +423,11 @@ const {
                   fontFamily: 'var(--font-sans)',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  fontWeight: activeCategory === cat ? '700' : '400',
+                  fontWeight: activeCategory === category.name ? '700' : '400',
                   color: '#000'
                 }}
               >
-                {cat}
+                {category.name}
               </button>
             ))}
 

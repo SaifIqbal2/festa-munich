@@ -25,6 +25,7 @@ export default function ProductCard({ product }) {
     >
       {/* Product Image Area */}
       <div 
+        className="product-card-image"
         style={{
           position: 'relative',
           height: '360px',

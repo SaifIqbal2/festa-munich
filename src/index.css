@@ -424,16 +424,29 @@ body {
   }
   .catalog-tabs {
     gap: 0.9rem 1.1rem !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 0.2rem 0.8rem !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .catalog-tabs::-webkit-scrollbar {
+    display: none;
   }
   .catalog-tabs button {
     font-size: 0.8rem !important;
     padding-bottom: 0.7rem !important;
+    flex: 0 0 auto;
   }
   .catalog-toolbar {
     align-items: flex-start !important;
   }
   .catalog-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+    grid-template-columns: 1fr !important;
     gap: 1.5rem 1rem !important;
+  }
+  .product-card-image {
+    height: 300px !important;
   }
 }
