@@ -378,9 +378,13 @@ const {
       {/* Mobile Drawer Menu */}
       {isMobileMenuOpen && (
         <div 
+          className="mobile-menu-drawer"
           style={{
             position: 'fixed',
-            inset: 0,
+            top: 0,
+            left: 0,
+            bottom: 0,
+            width: '100vw',
             zIndex: 9999,
             backgroundColor: '#ffffff',
             display: 'flex',

@@ -47,6 +47,8 @@ html {
   background-color: var(--bg-main);
   color: var(--text-primary);
   font-family: var(--font-sans);
+  width: 100%;
+  max-width: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -55,7 +57,16 @@ body {
   overflow-x: hidden;
   line-height: 1.5;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
   background-color: #ffffff;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
 }
 
 /* Typography Helpers */
@@ -423,6 +434,14 @@ body {
   .zegna-nav-container {
     padding: 0 1.2rem;
     height: 70px;
+    min-width: 0;
+  }
+  .zegna-nav-container > div {
+    min-width: 0;
+  }
+  .zegna-nav-container > div:last-child {
+    flex-shrink: 0;
+    gap: 1rem !important;
   }
   .hero-banner-section {
     height: min(68vh, 560px) !important;
