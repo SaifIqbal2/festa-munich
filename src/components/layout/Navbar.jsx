@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useShop } from '../../context/ShopContext';
-import { CATEGORIES, BRAND_INFO } from '../../data/initialProducts';
+import { BRAND_INFO } from '../../data/initialProducts';
 import { Search, ShoppingBag, Heart, Menu, X, Mail, User } from 'lucide-react';
 
 export default function Navbar({ onNavigateSection }) {
@@ -16,7 +16,8 @@ const {
     setSearchQuery,
     setIsOrderTrackingOpen,
     currentUser,
-    setIsAdminOpen
+    setIsAdminOpen,
+    categories
   } = useShop();
 
   const [activeMegaMenu, setActiveMegaMenu] = useState(null);
@@ -74,37 +75,16 @@ const {
               Ready to Wear
             </button>
 
-            <button
-              onClick={() => handleCategorySelect('Leather Jackets', '/shop')}
-              className="zegna-nav-link"
-              style={{ fontWeight: activeCategory === 'Leather Jackets' ? '600' : '400' }}
-            >
-              Leather Jackets
-            </button>
-
-            <button
-              onClick={() => handleCategorySelect('Textile Outerwear', '/shop')}
-              className="zegna-nav-link"
-              style={{ fontWeight: activeCategory === 'Textile Outerwear' ? '600' : '400' }}
-            >
-              Textile Outerwear
-            </button>
-
-            <button
-              onClick={() => handleCategorySelect('Tailoring & Blazers', '/shop')}
-              className="zegna-nav-link"
-              style={{ fontWeight: activeCategory === 'Tailoring & Blazers' ? '600' : '400' }}
-            >
-              Tailoring & Blazers
-            </button>
-
-            <button
-              onClick={() => handleCategorySelect('Accessories & Bags', '/shop')}
-              className="zegna-nav-link"
-              style={{ fontWeight: activeCategory === 'Accessories & Bags' ? '600' : '400' }}
-            >
-              Accessories
-            </button>
+            {categories.slice(0, 4).map((category) => (
+              <button
+                key={category.id || category.name}
+                onClick={() => handleCategorySelect(category.name, '/shop')}
+                className="zegna-nav-link"
+                style={{ fontWeight: activeCategory === category.name ? '600' : '400' }}
+              >
+                {category.name}
+              </button>
+            ))}
 
             <button
               onMouseEnter={() => setActiveMegaMenu('our-world')}
@@ -268,10 +248,11 @@ const {
             <div>
               <div className="mega-column-title">CATEGORIES</div>
               <ul className="mega-column-links">
-                <li><button onClick={() => handleCategorySelect('Leather Jackets')}>Leather Jackets & Coats</button></li>
-                <li><button onClick={() => handleCategorySelect('Textile Outerwear')}>Cashmere & Wool Outerwear</button></li>
-                <li><button onClick={() => handleCategorySelect('Tailoring & Blazers')}>Sartorial Tailored Blazers</button></li>
-                <li><button onClick={() => handleCategorySelect('Accessories & Bags')}>Leather Weekenders & Bags</button></li>
+                {categories.map((category) => (
+                  <li key={category.id || category.name}>
+                    <button onClick={() => handleCategorySelect(category.name)}>{category.name}</button>
+                  </li>
+                ))}
                 <li><button onClick={() => handleCategorySelect('All Garments')}>View All Garments</button></li>
               </ul>
             </div>

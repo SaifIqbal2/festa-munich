@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useShop } from '../../context/ShopContext';
-import { CATEGORIES } from '../../data/initialProducts';
 import ProductCard from './ProductCard';
 import { RefreshCcw } from 'lucide-react';
 
 export default function ProductCatalog() {
   const { 
     products, 
+    categories,
     activeCategory, 
     setActiveCategory, 
     searchQuery, 
@@ -57,7 +57,7 @@ export default function ProductCatalog() {
               paddingBottom: '0.8rem'
             }}
           >
-            {CATEGORIES.map((cat) => {
+            {['All Garments', ...categories.map((category) => category.name)].map((cat) => {
               const isActive = activeCategory === cat;
               return (
                 <button

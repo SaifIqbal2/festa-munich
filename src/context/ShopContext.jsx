@@ -463,6 +463,7 @@ export const ShopProvider = ({ children }) => {
             display_order
           )
         `)
+        .eq('is_active', true)
         .order('display_order', { ascending: true });
 
       if (catErr) {
