@@ -6,7 +6,7 @@ import { Mail, Phone, MapPin, CheckCircle2 } from 'lucide-react';
 
 export default function Footer({ onNavigateSection }) {
   const navigate = useNavigate();
-  const { categories, setActiveCategory, showToast, setIsOrderTrackingOpen } = useShop();
+  const { categories, setActiveCategory, showToast, openQuoteModal } = useShop();
   const [emailInput, setEmailInput] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -40,7 +40,7 @@ export default function Footer({ onNavigateSection }) {
               FESTA MUNICH
             </span>
             <p style={{ fontSize: '0.86rem', lineHeight: 1.6, color: '#aaaaaa', marginBottom: '1.5rem' }}>
-              Supreme mastery in bespoke leather outerwear and luxury textile tailoring.
+              Supreme mastery in bespoke leather outerwear, wholesale manufacturing, and luxury private label tailoring.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.82rem', color: '#cccccc' }}>
@@ -95,12 +95,12 @@ export default function Footer({ onNavigateSection }) {
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.86rem' }}>
               <li>
                 <button
-                  onClick={() => setIsOrderTrackingOpen(true)}
+                  onClick={() => openQuoteModal ? openQuoteModal() : window.open(BRAND_INFO.whatsappLink, '_blank')}
                   style={{ background: 'none', border: 'none', color: '#aaaaaa', cursor: 'pointer', padding: 0 }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#aaaaaa'}
                 >
-                  Track Atelier Order
+                  Request Wholesale Quotation (RFQ)
                 </button>
               </li>
               <li>

@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
 import { useShop } from '../../context/ShopContext';
-import { formatPrice } from '../../utils/helpers';
 import ProductManagementView from './ProductManagementView';
-import OrderManagementView from './OrderManagementView';
 import CategoryManagementView from './CategoryManagementView';
 import HeroManagementView from './HeroManagementView';
-import CommerceManagementView from './CommerceManagementView';
 import InquiryManagementView from './InquiryManagementView';
 import { 
   LayoutDashboard, 
   Package, 
-  ShoppingBag, 
   ArrowLeft, 
-  TrendingUp, 
-  DollarSign, 
   Layers,
   FolderTree,
-  AlertTriangle,
   Cloud,
   Image as ImageIcon,
-  Gift,
-  MessageSquare
+  MessageSquare,
+  Clock,
+  Sparkles,
+  CheckCircle2,
+  AlertTriangle
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -28,24 +24,19 @@ export default function AdminDashboard() {
     isAdminOpen, 
     setIsAdminOpen, 
     products, 
-    orders,
+    categories = [],
     inquiries = []
   } = useShop();
 
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'inquiries' | 'products' | 'categories' | 'hero' | 'orders'
-  
-  // Need to read from global for currency but ShopContext might just have `currency`
-  // We'll hardcode 'USD' or get it from context if it's there
-  const currency = 'USD'; 
+  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'inquiries' | 'products' | 'categories' | 'hero'
 
   if (!isAdminOpen) return null;
 
-  // KPI Calculations
-  const totalRevenue = orders.reduce((sum, ord) => sum + Number(ord.total_amount || 0), 0);
-  const totalOrdersCount = orders.length;
+  // B2B Wholesale KPI Calculations
+  const totalInquiriesCount = inquiries.length;
+  const newInquiriesCount = inquiries.filter(i => i.status === 'New').length;
   const totalProductsCount = products.length;
-  const averageOrderValue = totalOrdersCount > 0 ? Math.round(totalRevenue / totalOrdersCount) : 0;
-  const pendingOrdersCount = orders.filter(o => o.status === 'Pending' || o.status === 'Processing').length;
+  const totalCategoriesCount = categories.length;
   const lowStockProducts = products.filter(p => (p.stock || 0) <= 8);
 
   return (
@@ -288,45 +279,6 @@ export default function AdminDashboard() {
               {products.length}
             </span>
           </button>
-
-          <button
-            onClick={() => setActiveTab('orders')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',
-              padding: '0.85rem 1rem',
-              background: activeTab === 'orders' ? '#f5f5f5' : 'transparent',
-              color: activeTab === 'orders' ? '#000' : '#666',
-              border: 'none',
-              borderRadius: '6px',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.9rem',
-              fontWeight: activeTab === 'orders' ? '600' : '400',
-              cursor: 'pointer',
-              textAlign: 'left',
-              transition: 'all 0.2s'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-              <Package size={18} />
-              Orders & Tracking
-            </div>
-            {pendingOrdersCount > 0 && (
-              <span style={{ fontSize: '0.75rem', background: '#000', color: '#fff', fontWeight: '600', padding: '0.1rem 0.5rem', borderRadius: '10px' }}>
-                {pendingOrdersCount}
-              </span>
-            )}
-          </button>
-
-          <button
-            onClick={() => setActiveTab('commerce')}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', width: '100%', padding: '0.85rem 1rem', background: activeTab === 'commerce' ? '#f5f5f5' : 'transparent', color: activeTab === 'commerce' ? '#000' : '#666', border: 'none', borderRadius: '6px', fontFamily: 'var(--font-sans)', fontSize: '0.9rem', fontWeight: activeTab === 'commerce' ? '600' : '400', cursor: 'pointer', textAlign: 'left' }}
-          >
-            <Gift size={18} />
-            Coupons & Gift Cards
-          </button>
         </aside>
 
         {/* Tab Body */}
@@ -345,49 +297,37 @@ export default function AdminDashboard() {
               {/* 4 Metric Cards */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
                 
-                {/* Total Sales */}
+                {/* Total Wholesale Inquiries */}
                 <div style={{ background: '#fff', padding: '1.8rem', border: '1px solid #eaeaea', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#555', marginBottom: '0.8rem' }}>
-                    <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Total Revenue</span>
-                    <TrendingUp size={18} color="#000" />
+                    <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Total Wholesale RFQs</span>
+                    <MessageSquare size={18} color="#000" />
                   </div>
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: '#000', fontWeight: '500' }}>
-                    {formatPrice(totalRevenue, currency)}
+                    {totalInquiriesCount}
                   </div>
-                  <div style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>Lifetime store volume</div>
+                  <div style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>All-time quotation requests</div>
                 </div>
 
-                {/* Total Orders */}
+                {/* Pending Inquiries */}
                 <div style={{ background: '#fff', padding: '1.8rem', border: '1px solid #eaeaea', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#555', marginBottom: '0.8rem' }}>
-                    <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Total Orders</span>
-                    <Package size={18} color="#000" />
+                    <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>New Quotations</span>
+                    <Clock size={18} color="#2563eb" />
                   </div>
-                  <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: '#000', fontWeight: '500' }}>
-                    {totalOrdersCount}
+                  <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: '#2563eb', fontWeight: '500' }}>
+                    {newInquiriesCount}
                   </div>
-                  <div style={{ fontSize: '0.8rem', color: pendingOrdersCount > 0 ? '#d97706' : '#888', marginTop: '0.5rem', fontWeight: pendingOrdersCount > 0 ? 500 : 400 }}>
-                    {pendingOrdersCount} orders requiring attention
+                  <div style={{ fontSize: '0.8rem', color: newInquiriesCount > 0 ? '#2563eb' : '#888', marginTop: '0.5rem', fontWeight: newInquiriesCount > 0 ? 600 : 400 }}>
+                    {newInquiriesCount > 0 ? `${newInquiriesCount} inquiries awaiting response` : 'All inquiries addressed'}
                   </div>
-                </div>
-
-                {/* Average Order Value */}
-                <div style={{ background: '#fff', padding: '1.8rem', border: '1px solid #eaeaea', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#555', marginBottom: '0.8rem' }}>
-                    <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Avg. Order Value</span>
-                    <DollarSign size={18} color="#000" />
-                  </div>
-                  <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: '#000', fontWeight: '500' }}>
-                    {formatPrice(averageOrderValue, currency)}
-                  </div>
-                  <div style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>Per transaction</div>
                 </div>
 
                 {/* Active Catalog */}
                 <div style={{ background: '#fff', padding: '1.8rem', border: '1px solid #eaeaea', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#555', marginBottom: '0.8rem' }}>
                     <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Live Garments</span>
-                    <ShoppingBag size={18} color="#000" />
+                    <Layers size={18} color="#000" />
                   </div>
                   <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: '#000', fontWeight: '500' }}>
                     {totalProductsCount}
@@ -395,45 +335,63 @@ export default function AdminDashboard() {
                   <div style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>Active catalog products</div>
                 </div>
 
+                {/* Categories */}
+                <div style={{ background: '#fff', padding: '1.8rem', border: '1px solid #eaeaea', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#555', marginBottom: '0.8rem' }}>
+                    <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Collections</span>
+                    <FolderTree size={18} color="#000" />
+                  </div>
+                  <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', color: '#000', fontWeight: '500' }}>
+                    {totalCategoriesCount}
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>Atelier disciplines</div>
+                </div>
+
               </div>
 
               {/* Quick Actions */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
                 
-                {/* Recent Orders Overview */}
+                {/* Recent Inquiries Overview */}
                 <div style={{ background: '#fff', padding: '2rem', border: '1px solid #eaeaea', borderRadius: '8px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                     <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', color: '#000', margin: 0 }}>
-                      Recent Orders
+                      Recent Wholesale RFQs
                     </h4>
-                    <button onClick={() => setActiveTab('orders')} style={{ background: 'none', border: 'none', color: '#000', textDecoration: 'underline', cursor: 'pointer', fontSize: '0.85rem' }}>
-                      View All
+                    <button onClick={() => setActiveTab('inquiries')} style={{ background: 'none', border: 'none', color: '#000', textDecoration: 'underline', cursor: 'pointer', fontSize: '0.85rem' }}>
+                      View All ({inquiries.length})
                     </button>
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    {orders.slice(0, 4).map(ord => (
-                      <div key={ord.id || ord.order_number} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid #f0f0f0' }}>
-                        <div>
-                          <div style={{ color: '#000', fontWeight: '600', fontSize: '0.9rem' }}>#{ord.order_number}</div>
-                          <div style={{ color: '#666', fontSize: '0.85rem', marginTop: '0.2rem' }}>{ord.customer_name}</div>
-                        </div>
-                        <div style={{ textAlign: 'right' }}>
-                          <div style={{ color: '#000', fontWeight: '600', fontSize: '0.9rem' }}>{formatPrice(ord.total_amount, currency)}</div>
-                          <div style={{ 
-                            fontSize: '0.75rem', 
-                            color: ord.status === 'Delivered' ? '#059669' : '#d97706',
-                            background: ord.status === 'Delivered' ? '#d1fae5' : '#fef3c7',
-                            padding: '0.2rem 0.5rem',
-                            borderRadius: '12px',
-                            marginTop: '0.3rem',
-                            display: 'inline-block'
-                          }}>
-                            {ord.status}
+                    {inquiries.length === 0 ? (
+                      <div style={{ color: '#888', fontSize: '0.88rem', padding: '2rem 0', textAlign: 'center' }}>
+                        No wholesale inquiries yet. Incoming requests will appear here.
+                      </div>
+                    ) : (
+                      inquiries.slice(0, 4).map(inq => (
+                        <div key={inq.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid #f0f0f0' }}>
+                          <div>
+                            <div style={{ color: '#000', fontWeight: '600', fontSize: '0.9rem' }}>{inq.buyer_name || inq.buyerName || 'Valued Buyer'}</div>
+                            <div style={{ color: '#666', fontSize: '0.82rem', marginTop: '0.2rem' }}>
+                              {inq.product_title || inq.productTitle || 'Bulk Order'} • <strong>{inq.quantity || 'Wholesale'}</strong>
+                            </div>
+                          </div>
+                          <div style={{ textAlign: 'right' }}>
+                            <span style={{ 
+                              fontSize: '0.72rem', 
+                              fontWeight: '600',
+                              color: inq.status === 'New' ? '#1d4ed8' : '#374151',
+                              background: inq.status === 'New' ? '#eff6ff' : '#f3f4f6',
+                              padding: '0.2rem 0.6rem',
+                              borderRadius: '12px'
+                            }}>
+                              {inq.status || 'New'}
+                            </span>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
                 </div>
 
@@ -483,10 +441,6 @@ export default function AdminDashboard() {
 
           {/* TAB 4: PRODUCTS MANAGER */}
           {activeTab === 'products' && <ProductManagementView />}
-
-          {/* TAB 5: ORDERS TRACKER */}
-          {activeTab === 'orders' && <OrderManagementView />}
-          {activeTab === 'commerce' && <CommerceManagementView />}
 
         </main>
       </div>

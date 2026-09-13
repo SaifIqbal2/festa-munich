@@ -521,6 +521,21 @@ export const ShopProvider = ({ children }) => {
         setOrders(ordersData);
       }
 
+      // Fetch Inquiries / RFQ
+      try {
+        const { data: inqData, error: inqErr } = await client
+          .from('inquiries')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!inqErr && inqData && inqData.length > 0) {
+          console.log('✅ Loaded', inqData.length, 'inquiries from Supabase');
+          setInquiries(inqData);
+        }
+      } catch (inqEx) {
+        console.warn('Inquiries Supabase note:', inqEx);
+      }
+
       await fetchHeroSlidesFromSupabase();
     } catch (err) {
       console.error('❌ Fetch error:', err);

@@ -117,7 +117,7 @@ export default function ProductManagementView() {
             <tr style={{ borderBottom: '1px solid #eaeaea', background: '#fbfbfb', color: '#555' }}>
               <th style={{ padding: '1rem 1.2rem', fontWeight: '600', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em' }}>Garment</th>
               <th style={{ padding: '1rem 1.2rem', fontWeight: '600', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em' }}>Category</th>
-              <th style={{ padding: '1rem 1.2rem', fontWeight: '600', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em' }}>Price</th>
+              <th style={{ padding: '1rem 1.2rem', fontWeight: '600', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em' }}>Wholesale Status</th>
               <th style={{ padding: '1rem 1.2rem', fontWeight: '600', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em' }}>Stock</th>
               <th style={{ padding: '1rem 1.2rem', fontWeight: '600', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em' }}>Status</th>
               <th style={{ padding: '1rem 1.2rem', fontWeight: '600', textAlign: 'right', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.05em' }}>Actions</th>
@@ -160,9 +160,26 @@ export default function ProductManagementView() {
                     {prod.category}
                   </td>
 
-                  {/* Price */}
-                  <td style={{ padding: '1rem 1.2rem', fontFamily: 'var(--font-serif)', fontSize: '1rem', color: '#000', fontWeight: '500' }}>
-                    {formatPrice(prod.price, currency)}
+                  {/* Wholesale Pricing Status */}
+                  <td style={{ padding: '1rem 1.2rem' }}>
+                    <span style={{ 
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      letterSpacing: '0.05em',
+                      textTransform: 'uppercase',
+                      color: '#b59358',
+                      backgroundColor: 'rgba(181, 147, 88, 0.08)',
+                      padding: '0.25rem 0.6rem',
+                      borderRadius: '4px',
+                      border: '1px solid rgba(181, 147, 88, 0.2)'
+                    }}>
+                      Price on Request
+                    </span>
+                    {prod.price && Number(prod.price) > 0 ? (
+                      <div style={{ fontSize: '0.72rem', color: '#888', marginTop: '0.25rem' }}>
+                        Ref FOB: {formatPrice(prod.price, currency)}
+                      </div>
+                    ) : null}
                   </td>
 
                   {/* Stock */}

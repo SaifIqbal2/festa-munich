@@ -285,49 +285,57 @@ export default function ProductFormModal({ product, isOpen, onClose, onSave }) {
               </div>
             </div>
 
-            {/* Price, Compare Price, Stock */}
+            {/* B2B Wholesale Notice */}
+            <div style={{ padding: '0.75rem 1rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '0.8rem', color: '#475569', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontWeight: 700, color: '#0f172a' }}>Wholesale Architecture:</span>
+              <span>All public prices remain hidden as "Price on Request". Buyers submit RFQ quotations or WhatsApp inquiries.</span>
+            </div>
+
+            {/* Internal FOB, Sample Ref, Capacity & Badge */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#333', marginBottom: '0.5rem' }}>
-                  Target FOB Price (Optional)
+                  Target FOB / Unit Cost ($)
                 </label>
                 <input
                   type="number"
                   step="0.01"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                  placeholder="Optional internal ref"
+                  placeholder="Optional internal FOB"
                   style={{ width: '100%', padding: '0.75rem', border: '1px solid #ddd', borderRadius: '4px', fontSize: '0.9rem', outline: 'none' }}
                 />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#333', marginBottom: '0.5rem' }}>Compare-At Price ($)</label>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#333', marginBottom: '0.5rem' }}>
+                  Standard MOQ (Min Batch)
+                </label>
                 <input
                   type="number"
-                  step="0.01"
-                  value={formData.compare_at_price}
+                  step="1"
+                  value={formData.compare_at_price || ''}
                   onChange={(e) => setFormData({ ...formData, compare_at_price: e.target.value })}
-                  placeholder="1150"
+                  placeholder="e.g. 15 (Pieces)"
                   style={{ width: '100%', padding: '0.75rem', border: '1px solid #ddd', borderRadius: '4px', fontSize: '0.9rem', outline: 'none' }}
                 />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#333', marginBottom: '0.5rem' }}>Inventory Stock</label>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#333', marginBottom: '0.5rem' }}>Monthly Capacity / Stock</label>
                 <input
                   type="number"
                   value={formData.stock}
                   onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                  placeholder="15"
+                  placeholder="e.g. 50"
                   style={{ width: '100%', padding: '0.75rem', border: '1px solid #ddd', borderRadius: '4px', fontSize: '0.9rem', outline: 'none' }}
                 />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#333', marginBottom: '0.5rem' }}>Badge</label>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#333', marginBottom: '0.5rem' }}>Atelier Badge</label>
                 <input
                   type="text"
                   value={formData.badge}
                   onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
-                  placeholder="e.g. Iconic"
+                  placeholder="e.g. Bespoke / Atelier"
                   style={{ width: '100%', padding: '0.75rem', border: '1px solid #ddd', borderRadius: '4px', fontSize: '0.9rem', outline: 'none' }}
                 />
               </div>

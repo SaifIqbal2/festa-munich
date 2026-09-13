@@ -112,14 +112,29 @@ CREATE TABLE IF NOT EXISTS public.orders (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS public.inquiries (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    buyer_name TEXT NOT NULL,
+    company_name TEXT,
+    email TEXT,
+    phone TEXT,
+    product_title TEXT,
+    quantity TEXT DEFAULT 'Wholesale MOQ',
+    custom_specs TEXT,
+    status TEXT DEFAULT 'New',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.inquiries ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Public Read Products" ON public.products FOR SELECT USING (true);
 CREATE POLICY "Public Manage Products" ON public.products FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Public Read Orders" ON public.orders FOR SELECT USING (true);
-CREATE POLICY "Public Insert Orders" ON public.orders FOR INSERT WITH CHECK (true);
-CREATE POLICY "Public Update Orders" ON public.orders FOR UPDATE USING (true) WITH CHECK (true);`;
+CREATE POLICY "Public Read Inquiries" ON public.inquiries FOR SELECT USING (true);
+CREATE POLICY "Public Insert Inquiries" ON public.inquiries FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public Update Inquiries" ON public.inquiries FOR UPDATE USING (true) WITH CHECK (true);
+CREATE POLICY "Public Delete Inquiries" ON public.inquiries FOR DELETE USING (true);`;
 
     navigator.clipboard.writeText(sqlCode);
     setCopiedSchema(true);
