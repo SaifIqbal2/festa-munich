@@ -771,9 +771,28 @@ export const ShopProvider = ({ children }) => {
           const { error } = await client.from('products').delete().eq('id', id);
 
           if (error) {
-            // 409 = product referenced in order_items → use soft delete instead
-            if (error.code === '23503' || error.message?.includes('foreign key') || error.message?.includes('violates')) {
-              // Soft delete: mark as inactive so it disappears from shop
+            const isConflict = 
+              error.code === '23503' || 
+              error.code === '409' || 
+              error.status === 409 || 
+              error.message?.toLowerCase().includes('foreign key') || 
+              error.message?.toLowerCase().includes('violates') ||
+              error.details?.toLowerCase().includes('foreign key') ||
+              error.details?.toLowerCase().includes('order_items') ||
+              error.details?.toLowerCase().includes('referenced');
+
+            if (isConflict) {
+              // Attempt to disassociate order_items and retry
+              try {
+                await client.from('order_items').update({ product_id: null }).eq('product_id', id);
+                const { error: retryErr } = await client.from('products').delete().eq('id', id);
+                if (!retryErr) {
+                  showToast(`"${prod?.title || 'Product'}" permanently deleted.`, 'info');
+                  return;
+                }
+              } catch (_) {}
+
+              // Soft delete fallback: mark as inactive so it disappears from shop
               const { error: softErr } = await client
                 .from('products')
                 .update({ is_active: false, badge: 'DISCONTINUED' })
@@ -783,7 +802,7 @@ export const ShopProvider = ({ children }) => {
                 // Both failed — restore the product in UI
                 setProducts(prev => [prod, ...prev]);
                 console.error('Soft delete error:', softErr);
-                showToast(`Could not remove "${prod?.title}". ${softErr.message}`, 'error');
+                showToast(`Delete failed (409 Conflict): Please run "supabase_delete_fix.sql" in Supabase SQL Editor.`, 'error');
               } else {
                 // Soft delete succeeded — product hidden from shop
                 showToast(`"${prod?.title}" removed from store. (Order history preserved)`, 'info');
