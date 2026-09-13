@@ -149,10 +149,11 @@ export default function IconicCollection({ onExploreCatalog }) {
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover',
+                  objectFit: 'contain',
+                  objectPosition: 'center top',
                   transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
               />
 
@@ -336,10 +337,11 @@ export default function IconicCollection({ onExploreCatalog }) {
                         style={{ 
                           width: '100%', 
                           height: '100%', 
-                          objectFit: 'cover', 
+                          objectFit: 'contain', 
+                          objectPosition: 'center top',
                           transition: 'transform 0.5s ease' 
                         }}
-                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
                         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
                       />
 

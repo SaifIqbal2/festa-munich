@@ -85,7 +85,7 @@ export default function ProductDetailModal() {
             <img 
               src={images[selectedImageIndex] || images[0]} 
               alt={selectedProduct.title}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }}
             />
           </div>
 

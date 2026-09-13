@@ -216,7 +216,7 @@ Inquiry generated from festamunich.com`;
                   <img 
                     src={quoteProduct.images?.[0] || 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=300&auto=format&fit=crop'} 
                     alt={quoteProduct.title}
-                    style={{ width: '60px', height: '60px', objectFit: 'cover' }}
+                    style={{ width: '60px', height: '60px', objectFit: 'contain', objectPosition: 'center', background: '#fff' }}
                   />
                   <div>
                     <div style={{ fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888' }}>

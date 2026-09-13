@@ -40,10 +40,11 @@ export default function ProductCard({ product }) {
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
+            objectFit: 'contain',
+            objectPosition: 'center top',
             transition: 'transform 0.5s ease'
           }}
-          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.04)'}
+          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
           onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
         />
 
