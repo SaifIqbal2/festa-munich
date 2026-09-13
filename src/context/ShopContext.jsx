@@ -67,7 +67,17 @@ export const ShopProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isOrderTrackingOpen, setIsOrderTrackingOpen] = useState(false);
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpenRaw] = useState(() => {
+    try { return sessionStorage.getItem('fm_admin_open') === 'true'; } catch { return false; }
+  });
+
+  const setIsAdminOpen = (val) => {
+    setIsAdminOpenRaw(val);
+    try { 
+      if (val) sessionStorage.setItem('fm_admin_open', 'true');
+      else sessionStorage.removeItem('fm_admin_open');
+    } catch {}
+  };
   const [toast, setToast] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 

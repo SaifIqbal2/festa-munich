@@ -20,6 +20,7 @@ import WishlistPage from './pages/WishlistPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { CheckCircle, Info } from 'lucide-react';
 import BackToTop from './components/common/BackToTop';
+import SiteWidgets from './components/common/SiteWidgets';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -61,6 +62,7 @@ function BoutiqueStoreContent() {
       <OrderTrackingModal />
       <AdminDashboard />
       <BackToTop />
+      <SiteWidgets />
 
       {toast && (
         <div className="toast-container">

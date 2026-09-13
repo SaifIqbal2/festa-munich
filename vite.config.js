@@ -11,9 +11,9 @@ export default defineConfig({
       srcDir: 'src',
       filename: 'service-worker.js',
       manifest: {
-        name: 'Festa Munich - Luxury Fashion',
+        name: 'Festa Munich - Wholesale B2B Leather & Bespoke Atelier',
         short_name: 'Festa Munich',
-        description: 'Discover exquisite handcrafted luxury fashion',
+        description: 'Global B2B wholesale leather jackets and bespoke atelier manufacturing from Sialkot. Request quotations and explore our garment catalog.',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
@@ -48,8 +48,9 @@ export default defineConfig({
     minify: 'terser',
   },
   server: {
-    port: 3000,
-    open: true,
+    port: 5173,
+    open: false,
+    historyApiFallback: true,
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', 'zustand'],
