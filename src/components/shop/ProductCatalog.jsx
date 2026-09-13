@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useShop } from '../../context/ShopContext';
 import ProductCard from './ProductCard';
+import ProductSkeleton from '../common/ProductSkeleton';
 import { RefreshCcw } from 'lucide-react';
 
 export default function ProductCatalog() {
@@ -10,7 +11,8 @@ export default function ProductCatalog() {
     activeCategory, 
     setActiveCategory, 
     searchQuery, 
-    setSearchQuery 
+    setSearchQuery,
+    isLoading
   } = useShop();
 
   const [sortBy, setSortBy] = useState('featured');
@@ -146,7 +148,13 @@ export default function ProductCatalog() {
         </div>
 
         {/* Product Grid */}
-        {sortedProducts.length === 0 ? (
+        {isLoading && products.length === 0 ? (
+          <div className="catalog-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2.5rem 2rem' }}>
+            {Array.from({ length: 8 }).map((_, i) => (
+              <ProductSkeleton key={i} />
+            ))}
+          </div>
+        ) : sortedProducts.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '5rem 1rem', background: '#fafafa', border: '1px solid #eee' }}>
             <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: '#000', marginBottom: '0.5rem' }}>
               No garments found
@@ -177,3 +185,4 @@ export default function ProductCatalog() {
     </section>
   );
 }
+

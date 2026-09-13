@@ -1,9 +1,15 @@
 import React from 'react';
 import BespokeConcierge from '../components/home/BespokeConcierge';
+import SEOHead from '../components/common/SEOHead';
 
 export default function BespokePage() {
   return (
     <>
+      <SEOHead
+        title="Bespoke — Custom Leather & Textile Atelier"
+        description="Commission a bespoke garment with Festa Munich's atelier team. Custom leather jackets, tailored overcoats, and made-to-measure luxury clothing — crafted to your exact specifications."
+        canonical="https://festamunich.com/bespoke"
+      />
       <div style={{ background: '#f7f7f7', borderBottom: '1px solid #ececec' }}>
         <div className="container-zegna" style={{ padding: '4rem 1.5rem 2rem' }}>
           <div style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#777', marginBottom: '0.8rem', fontWeight: '600' }}>
@@ -21,3 +27,4 @@ export default function BespokePage() {
     </>
   );
 }
+

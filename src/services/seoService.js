@@ -97,7 +97,7 @@ export const seoService = {
         ],
         contactPoint: {
           '@type': 'ContactPoint',
-          telephone: '+49-XXX-XXXX',
+          telephone: '+92-327-7551063',
           contactType: 'Customer Service',
         },
       },

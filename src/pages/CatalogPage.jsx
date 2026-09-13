@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useShop } from '../context/ShopContext';
 import ProductCatalog from '../components/shop/ProductCatalog';
+import SEOHead from '../components/common/SEOHead';
 
 export default function CatalogPage() {
   const { setActiveCategory } = useShop();
@@ -11,6 +12,11 @@ export default function CatalogPage() {
 
   return (
     <>
+      <SEOHead
+        title="Shop — Leather Jackets & Luxury Garments"
+        description="Browse Festa Munich's full collection of handcrafted leather jackets, bespoke overcoats, and tailored garments. Luxury fashion from Sialkot to the world."
+        canonical="https://festamunich.com/shop"
+      />
       <div style={{ background: '#f7f7f7', borderBottom: '1px solid #ececec' }}>
         <div className="container-zegna" style={{ padding: '4rem 1.5rem 2rem' }}>
           <div style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#777', marginBottom: '0.8rem', fontWeight: '600' }}>
@@ -28,3 +34,4 @@ export default function CatalogPage() {
     </>
   );
 }
+

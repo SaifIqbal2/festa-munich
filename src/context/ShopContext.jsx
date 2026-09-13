@@ -475,10 +475,11 @@ export const ShopProvider = ({ children }) => {
         console.log('ℹ️ No categories found - check Supabase');
       }
 
-      // Fetch Products
+      // Fetch Products — exclude soft-deleted (is_active = false)
       const { data: productsData, error: prodErr } = await client
         .from('products')
         .select('*')
+        .or('is_active.is.null,is_active.eq.true')
         .order('created_at', { ascending: false });
 
       if (prodErr) {
@@ -758,18 +759,56 @@ export const ShopProvider = ({ children }) => {
 
   const deleteProduct = async (id) => {
     const prod = products.find(p => p.id === id);
+    // Optimistically remove from UI state immediately
     setProducts(prev => prev.filter(p => p.id !== id));
-    showToast(`Product "${prod?.title || id}" removed.`, 'info');
 
     if (isSupabaseConfigured()) {
       const client = getSupabaseClient();
       if (client) {
         try {
-          await client.from('products').delete().eq('id', id);
+          // Strategy: Try hard delete first.
+          // If 409 (foreign key constraint — product in order_items), fallback to soft delete.
+          const { error } = await client.from('products').delete().eq('id', id);
+
+          if (error) {
+            // 409 = product referenced in order_items → use soft delete instead
+            if (error.code === '23503' || error.message?.includes('foreign key') || error.message?.includes('violates')) {
+              // Soft delete: mark as inactive so it disappears from shop
+              const { error: softErr } = await client
+                .from('products')
+                .update({ is_active: false, badge: 'DISCONTINUED' })
+                .eq('id', id);
+
+              if (softErr) {
+                // Both failed — restore the product in UI
+                setProducts(prev => [prod, ...prev]);
+                console.error('Soft delete error:', softErr);
+                showToast(`Could not remove "${prod?.title}". ${softErr.message}`, 'error');
+              } else {
+                // Soft delete succeeded — product hidden from shop
+                showToast(`"${prod?.title}" removed from store. (Order history preserved)`, 'info');
+              }
+            } else {
+              // Other error (RLS, network, etc.) — restore product
+              setProducts(prev => [prod, ...prev]);
+              console.error('Delete product error:', error);
+              showToast(`Could not delete "${prod?.title}". ${error.message || 'Check Supabase permissions.'}`, 'error');
+            }
+            return;
+          }
+          // Hard delete succeeded
+          showToast(`"${prod?.title || 'Product'}" permanently deleted.`, 'info');
         } catch (e) {
-          console.error(e);
+          // Unexpected error — restore product
+          setProducts(prev => [prod, ...prev]);
+          console.error('Delete product error:', e);
+          showToast(`Could not delete product. Please try again.`, 'error');
         }
+      } else {
+        showToast(`"${prod?.title || 'Product'}" removed from catalog.`, 'info');
       }
+    } else {
+      showToast(`"${prod?.title || 'Product'}" removed from catalog.`, 'info');
     }
   };
 

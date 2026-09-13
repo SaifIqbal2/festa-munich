@@ -1,10 +1,16 @@
 import React from 'react';
 import CraftsmanshipStory from '../components/home/CraftsmanshipStory';
 import BespokeConcierge from '../components/home/BespokeConcierge';
+import SEOHead from '../components/common/SEOHead';
 
 export default function StoryPage() {
   return (
     <>
+      <SEOHead
+        title="Our World — Atelier Heritage & Craftsmanship"
+        description="Discover the story behind Festa Munich — a legacy of master craftsmen in Sialkot creating European luxury garments with natural materials and disciplined precision."
+        canonical="https://festamunich.com/our-world"
+      />
       <div style={{ background: '#f7f7f7', borderBottom: '1px solid #ececec' }}>
         <div className="container-zegna" style={{ padding: '4rem 1.5rem 2rem' }}>
           <div style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#777', marginBottom: '0.8rem', fontWeight: '600' }}>
@@ -23,3 +29,4 @@ export default function StoryPage() {
     </>
   );
 }
+

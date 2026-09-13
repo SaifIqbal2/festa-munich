@@ -98,7 +98,11 @@ export default function BespokeConcierge() {
                 <div style={{ color: '#777', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   WhatsApp / Phone
                 </div>
-                <div style={{ color: '#000', fontWeight: '500', marginTop: '0.2rem' }}>{BRAND_INFO.phone} / {BRAND_INFO.whatsapp}</div>
+                <div style={{ color: '#000', fontWeight: '500', marginTop: '0.2rem' }}>
+                  <a href={BRAND_INFO.whatsappLink} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+                    {BRAND_INFO.whatsapp}
+                  </a>
+                </div>
               </div>
 
               <div>

@@ -1,0 +1,11 @@
+# Festa Munich — robots.txt
+User-agent: *
+Allow: /
+
+# Block admin and auth pages from indexing
+Disallow: /admin
+Disallow: /login
+Disallow: /account
+
+# Sitemap location
+Sitemap: https://festamunich.com/sitemap.xml

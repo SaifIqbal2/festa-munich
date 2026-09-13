@@ -18,6 +18,7 @@ import AccountPage from './pages/AccountPage';
 import WishlistPage from './pages/WishlistPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { CheckCircle, Info } from 'lucide-react';
+import BackToTop from './components/common/BackToTop';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -57,6 +58,7 @@ function BoutiqueStoreContent() {
       <CheckoutModal />
       <OrderTrackingModal />
       <AdminDashboard />
+      <BackToTop />
 
       {toast && (
         <div className="toast-container">
