@@ -1,18 +1,17 @@
 import React from 'react';
 import { useShop } from '../../context/ShopContext';
-import { formatPrice } from '../../utils/helpers';
-import { Heart, ArrowRight, ShoppingBag, Eye, Sparkles } from 'lucide-react';
+import { Heart, ArrowRight, ShoppingBag, Eye, Sparkles, Send } from 'lucide-react';
 
 export default function IconicCollection({ onExploreCatalog }) {
   const { 
     products, 
-    currency, 
     setSelectedProduct, 
     addToCart, 
     setActiveCategory,
     wishlist = [],
     toggleWishlist,
-    isLoading 
+    isLoading,
+    openQuoteModal 
   } = useShop();
 
   // 1. Filter out inactive / soft-deleted products
@@ -253,33 +252,32 @@ export default function IconicCollection({ onExploreCatalog }) {
                 {primaryFeature.description || primaryFeature.subtitle || 'Exquisitely crafted in our Sialkot atelier with the finest materials and anatomical precision.'}
               </p>
 
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '2rem' }}>
-                <span style={{ fontSize: '1.35rem', fontWeight: '600', color: '#000000' }}>
-                  {formatPrice(primaryFeature.price, currency)}
+              {/* Wholesale Pricing Notice */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.8rem' }}>
+                <span style={{ fontSize: '1.25rem', fontWeight: '700', color: '#000000' }}>
+                  Pricing on Request
                 </span>
-                {primaryFeature.compare_at_price && (
-                  <span style={{ fontSize: '0.95rem', color: '#888888', textDecoration: 'line-through' }}>
-                    {formatPrice(primaryFeature.compare_at_price, currency)}
-                  </span>
-                )}
+                <span style={{ fontSize: '0.68rem', background: '#000000', color: '#ffffff', padding: '0.2rem 0.5rem', fontWeight: '700', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                  B2B & Custom MOQ
+                </span>
               </div>
 
               <div style={{ display: 'flex', gap: '0.9rem', flexWrap: 'wrap' }}>
                 <button
                   onClick={() => setSelectedProduct(primaryFeature)}
-                  className="btn-zegna-primary"
+                  className="btn-zegna-outline"
                   style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.6rem' }}
                 >
                   <Eye size={15} />
                   <span>Inspect Atelier Details</span>
                 </button>
                 <button
-                  onClick={() => addToCart(primaryFeature, primaryFeature.available_sizes?.[0], primaryFeature.colors?.[0])}
-                  className="btn-zegna-outline"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.4rem' }}
+                  onClick={() => openQuoteModal(primaryFeature)}
+                  className="btn-zegna-primary"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.6rem' }}
                 >
-                  <ShoppingBag size={15} />
-                  <span>Add to Bag</span>
+                  <Send size={15} />
+                  <span>Request Wholesale Quote</span>
                 </button>
               </div>
             </div>
@@ -422,15 +420,14 @@ export default function IconicCollection({ onExploreCatalog }) {
                       </div>
                     )}
 
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.6rem', marginBottom: '0.9rem' }}>
-                      <span style={{ fontWeight: '600', fontSize: '1rem', color: '#000000' }}>
-                        {formatPrice(product.price, currency)}
+                    {/* Price Notice */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.9rem' }}>
+                      <span style={{ fontWeight: '600', fontSize: '0.88rem', color: '#000000' }}>
+                        Price on Request
                       </span>
-                      {product.compare_at_price && (
-                        <span style={{ fontSize: '0.8rem', color: '#888888', textDecoration: 'line-through' }}>
-                          {formatPrice(product.compare_at_price, currency)}
-                        </span>
-                      )}
+                      <span style={{ fontSize: '0.62rem', color: '#777', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                        • Bulk MOQ
+                      </span>
                     </div>
 
                     {/* Action buttons */}
@@ -440,14 +437,15 @@ export default function IconicCollection({ onExploreCatalog }) {
                         className="btn-zegna-outline"
                         style={{ padding: '0.55rem 0.4rem', fontSize: '0.68rem', textAlign: 'center' }}
                       >
-                        Inspect
+                        Details
                       </button>
                       <button
-                        onClick={() => addToCart(product, product.available_sizes?.[0], product.colors?.[0])}
+                        onClick={() => openQuoteModal(product)}
                         className="btn-zegna-primary"
-                        style={{ padding: '0.55rem 0.4rem', fontSize: '0.68rem', textAlign: 'center' }}
+                        style={{ padding: '0.55rem 0.4rem', fontSize: '0.68rem', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.3rem' }}
                       >
-                        Add to Bag
+                        <Send size={11} />
+                        <span>Inquire</span>
                       </button>
                     </div>
 

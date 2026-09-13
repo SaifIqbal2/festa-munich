@@ -87,6 +87,16 @@ const {
             ))}
 
             <button
+              onClick={() => {
+                navigate('/bespoke');
+                setActiveMegaMenu(null);
+              }}
+              className="zegna-nav-link"
+            >
+              Bespoke & B2B
+            </button>
+
+            <button
               onMouseEnter={() => setActiveMegaMenu('our-world')}
               onClick={handleNavigateStory}
               className="zegna-nav-link"
@@ -196,11 +206,12 @@ const {
             )}
           </button>
 
-          {/* Shopping Bag Icon with Count */}
+          {/* RFQ & Quotation List Icon with Count */}
           <button
             onClick={() => setIsCartOpen(true)}
             style={{ background: 'none', border: 'none', color: '#000', cursor: 'pointer', position: 'relative', display: 'flex' }}
-            aria-label="Shopping Bag"
+            aria-label="Wholesale RFQ List"
+            title="Wholesale RFQ List"
           >
             <ShoppingBag size={20} />
             {cartItemCount > 0 && (

@@ -6,6 +6,7 @@ import OrderManagementView from './OrderManagementView';
 import CategoryManagementView from './CategoryManagementView';
 import HeroManagementView from './HeroManagementView';
 import CommerceManagementView from './CommerceManagementView';
+import InquiryManagementView from './InquiryManagementView';
 import { 
   LayoutDashboard, 
   Package, 
@@ -18,7 +19,8 @@ import {
   AlertTriangle,
   Cloud,
   Image as ImageIcon,
-  Gift
+  Gift,
+  MessageSquare
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -26,10 +28,11 @@ export default function AdminDashboard() {
     isAdminOpen, 
     setIsAdminOpen, 
     products, 
-    orders
+    orders,
+    inquiries = []
   } = useShop();
 
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'categories' | 'products' | 'orders'
+  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'inquiries' | 'products' | 'categories' | 'hero' | 'orders'
   
   // Need to read from global for currency but ShopContext might just have `currency`
   // We'll hardcode 'USD' or get it from context if it's there
@@ -176,6 +179,37 @@ export default function AdminDashboard() {
           >
             <LayoutDashboard size={18} />
             Overview & Analytics
+          </button>
+
+          <button
+            onClick={() => setActiveTab('inquiries')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              padding: '0.85rem 1rem',
+              background: activeTab === 'inquiries' ? '#f5f5f5' : 'transparent',
+              color: activeTab === 'inquiries' ? '#000' : '#666',
+              border: 'none',
+              borderRadius: '6px',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '0.9rem',
+              fontWeight: activeTab === 'inquiries' ? '600' : '400',
+              cursor: 'pointer',
+              textAlign: 'left',
+              transition: 'all 0.2s'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+              <MessageSquare size={18} />
+              Wholesale RFQs
+            </div>
+            {inquiries.filter(i => i.status === 'New').length > 0 && (
+              <span style={{ fontSize: '0.72rem', background: '#2563eb', color: '#fff', fontWeight: '700', padding: '0.15rem 0.5rem', borderRadius: '10px' }}>
+                {inquiries.filter(i => i.status === 'New').length} New
+              </span>
+            )}
           </button>
 
           <button
@@ -437,6 +471,9 @@ export default function AdminDashboard() {
 
             </div>
           )}
+
+          {/* TAB: INQUIRIES & RFQ */}
+          {activeTab === 'inquiries' && <InquiryManagementView />}
 
           {/* TAB 2: CATEGORIES */}
           {activeTab === 'categories' && <CategoryManagementView />}

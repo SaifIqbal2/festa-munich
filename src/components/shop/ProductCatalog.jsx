@@ -29,8 +29,7 @@ export default function ProductCatalog() {
   });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortBy === 'price-low') return a.price - b.price;
-    if (sortBy === 'price-high') return b.price - a.price;
+    if (sortBy === 'title-asc') return (a.title || '').localeCompare(b.title || '');
     if (sortBy === 'newest') return (b.is_new ? 1 : 0) - (a.is_new ? 1 : 0);
     return (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0);
   });
@@ -139,10 +138,9 @@ export default function ProductCatalog() {
                 borderColor: '#e0e0e0'
               }}
             >
-              <option value="featured">Featured</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="newest">New In</option>
+              <option value="featured">Featured Creations</option>
+              <option value="newest">New In Atelier</option>
+              <option value="title-asc">Alphabetical (A - Z)</option>
             </select>
           </div>
         </div>

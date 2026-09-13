@@ -6,6 +6,7 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import QuickCartDrawer from './components/layout/QuickCartDrawer';
 import ProductDetailModal from './components/shop/ProductDetailModal';
+import QuoteRequestModal from './components/shop/QuoteRequestModal';
 import OrderTrackingModal from './components/shop/OrderTrackingModal';
 import CheckoutModal from './components/checkout/CheckoutModal';
 import AdminDashboard from './components/admin/AdminDashboard';
@@ -55,6 +56,7 @@ function BoutiqueStoreContent() {
       <Footer />
       <QuickCartDrawer />
       <ProductDetailModal />
+      <QuoteRequestModal />
       <CheckoutModal />
       <OrderTrackingModal />
       <AdminDashboard />

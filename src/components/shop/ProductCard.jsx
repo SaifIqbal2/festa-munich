@@ -1,15 +1,13 @@
 import React from 'react';
 import { useShop } from '../../context/ShopContext';
-import { formatPrice } from '../../utils/helpers';
-import { Heart } from 'lucide-react';
+import { Heart, Send } from 'lucide-react';
 
 export default function ProductCard({ product }) {
   const { 
-    currency, 
     setSelectedProduct, 
-    addToCart, 
     wishlist, 
-    toggleWishlist 
+    toggleWishlist,
+    openQuoteModal 
   } = useShop();
 
   const isWishlisted = wishlist.includes(product.id);
@@ -117,35 +115,38 @@ export default function ProductCard({ product }) {
           {product.title}
         </h3>
 
-        <div style={{ fontSize: '0.75rem', color: '#666666', fontStyle: 'italic', marginBottom: '0.5rem' }}>
-          {product.material}
-        </div>
+        {product.material && (
+          <div style={{ fontSize: '0.75rem', color: '#666666', fontStyle: 'italic', marginBottom: '0.5rem' }}>
+            {product.material}
+          </div>
+        )}
 
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.7rem' }}>
-          <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#000000' }}>
-            {formatPrice(product.price, currency)}
+        {/* Wholesale Price Notice */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.85rem' }}>
+          <span style={{ fontSize: '0.84rem', fontWeight: '600', color: '#000000' }}>
+            Price on Request
           </span>
-          {product.compare_at_price && (
-            <span style={{ fontSize: '0.75rem', color: '#888888', textDecoration: 'line-through' }}>
-              {formatPrice(product.compare_at_price, currency)}
-            </span>
-          )}
+          <span style={{ fontSize: '0.65rem', color: '#777', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            • Wholesale MOQ
+          </span>
         </div>
 
+        {/* Action Buttons */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.45rem', marginTop: 'auto' }}>
           <button
             onClick={() => setSelectedProduct(product)}
             className="btn-zegna-outline"
-            style={{ padding: '0.5rem 0.45rem', fontSize: '0.68rem' }}
+            style={{ padding: '0.55rem 0.45rem', fontSize: '0.68rem' }}
           >
-            View Details
+            Details
           </button>
           <button
-            onClick={() => addToCart(product, product.available_sizes?.[0], product.colors?.[0])}
+            onClick={() => openQuoteModal(product)}
             className="btn-zegna-primary"
-            style={{ padding: '0.5rem 0.45rem', fontSize: '0.68rem' }}
+            style={{ padding: '0.55rem 0.45rem', fontSize: '0.68rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.3rem' }}
           >
-            Add to Bag
+            <Send size={11} />
+            <span>Inquire</span>
           </button>
         </div>
       </div>

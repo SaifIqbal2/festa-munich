@@ -71,6 +71,23 @@ export const ShopProvider = ({ children }) => {
   const [toast, setToast] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // B2B Wholesale / Inquiry System State
+  const [inquiries, setInquiries] = useState(() => {
+    try {
+      const saved = localStorage.getItem('fm_inquiries');
+      return saved ? JSON.parse(saved) : [];
+    } catch (_) {
+      return [];
+    }
+  });
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [quoteProduct, setQuoteProduct] = useState(null);
+
+  const openQuoteModal = (product = null) => {
+    setQuoteProduct(product);
+    setIsQuoteModalOpen(true);
+  };
+
   // Show Toast
   const showToast = (message, type = 'success') => {
     setToast({ message, type, id: Date.now() });
@@ -946,7 +963,90 @@ export const ShopProvider = ({ children }) => {
     }
   };
 
-  // Cart Handlers
+  // ==========================================
+  // B2B Wholesale / Inquiry Methods
+  // ==========================================
+  const submitInquiry = async (inquiryData) => {
+    const newInquiry = {
+      id: generateUuid(),
+      created_at: new Date().toISOString(),
+      status: 'New',
+      ...inquiryData
+    };
+
+    setInquiries(prev => {
+      const updated = [newInquiry, ...prev];
+      try {
+        localStorage.setItem('fm_inquiries', JSON.stringify(updated));
+      } catch (_) {}
+      return updated;
+    });
+
+    if (isSupabaseConfigured()) {
+      const client = getSupabaseClient();
+      if (client) {
+        try {
+          await client.from('inquiries').insert([{
+            id: newInquiry.id,
+            buyer_name: newInquiry.buyerName || newInquiry.fullName || 'Anonymous Buyer',
+            company_name: newInquiry.companyName || '',
+            email: newInquiry.email || '',
+            phone: newInquiry.phone || '',
+            product_title: newInquiry.productTitle || 'Bulk RFQ Request',
+            quantity: String(newInquiry.quantity || 'Bulk Inquiry'),
+            custom_specs: newInquiry.customSpecs || newInquiry.message || '',
+            status: 'New',
+            created_at: newInquiry.created_at
+          }]);
+        } catch (err) {
+          console.warn('Inquiry Supabase note (saved locally):', err);
+        }
+      }
+    }
+
+    showToast('Inquiry submitted! Our export team will contact you.', 'success');
+    return newInquiry;
+  };
+
+  const updateInquiryStatus = async (id, status) => {
+    setInquiries(prev => {
+      const updated = prev.map(inq => inq.id === id ? { ...inq, status } : inq);
+      try {
+        localStorage.setItem('fm_inquiries', JSON.stringify(updated));
+      } catch (_) {}
+      return updated;
+    });
+
+    if (isSupabaseConfigured()) {
+      const client = getSupabaseClient();
+      if (client) {
+        try {
+          await client.from('inquiries').update({ status }).eq('id', id);
+        } catch (_) {}
+      }
+    }
+  };
+
+  const deleteInquiry = async (id) => {
+    setInquiries(prev => {
+      const updated = prev.filter(inq => inq.id !== id);
+      try {
+        localStorage.setItem('fm_inquiries', JSON.stringify(updated));
+      } catch (_) {}
+      return updated;
+    });
+
+    if (isSupabaseConfigured()) {
+      const client = getSupabaseClient();
+      if (client) {
+        try {
+          await client.from('inquiries').delete().eq('id', id);
+        } catch (_) {}
+      }
+    }
+  };
+
+  // Cart / RFQ Handlers
   const addToCart = (product, selectedSize, selectedColor, quantity = 1) => {
     const size = selectedSize || product.available_sizes?.[0] || 'Standard';
     const color = selectedColor || product.colors?.[0] || 'Original';
@@ -1206,7 +1306,23 @@ export const ShopProvider = ({ children }) => {
         removeGiftCard,
         validateCoupon,
         calculateDiscountAmount,
-        discountAmount
+        discountAmount,
+        // B2B Wholesale / RFQ Inquiries
+        inquiries,
+        setInquiries,
+        submitInquiry,
+        updateInquiryStatus,
+        deleteInquiry,
+        isQuoteModalOpen,
+        setIsQuoteModalOpen,
+        quoteProduct,
+        setQuoteProduct,
+        openQuoteModal,
+        rfqList: cart,
+        addToRfq: addToCart,
+        removeFromRfq: removeFromCart,
+        updateRfqQuantity: updateCartQuantity,
+        clearRfq: () => setCart([])
       }}
     >
       {children}

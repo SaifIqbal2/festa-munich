@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { useShop } from '../../context/ShopContext';
-import { formatPrice } from '../../utils/helpers';
 import { BRAND_INFO } from '../../data/initialProducts';
-import { X, Heart, MessageSquare, Check, Ruler } from 'lucide-react';
+import { X, Heart, MessageSquare, Check, Ruler, Send } from 'lucide-react';
 
 export default function ProductDetailModal() {
   const { 
     selectedProduct, 
     setSelectedProduct, 
-    currency, 
     addToCart, 
     wishlist, 
-    toggleWishlist 
+    toggleWishlist,
+    openQuoteModal 
   } = useShop();
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -27,7 +26,7 @@ export default function ProductDetailModal() {
     ? selectedProduct.images 
     : ['https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1200&auto=format&fit=crop'];
 
-  const whatsappInquiryUrl = `https://wa.me/923277551063?text=Hello%20Festa%20Munich,%20I%20am%20inquiring%20about%20the%20${encodeURIComponent(selectedProduct.title)}%20(Ref:%20${selectedProduct.id})%20in%20Size:%20${selectedSize}.`;
+  const whatsappInquiryUrl = `https://wa.me/923277551063?text=Hello%20Festa%20Munich,%20I%20am%20inquiring%20about%20wholesale%20manufacturing%20for%20the%20${encodeURIComponent(selectedProduct.title)}%20(Ref:%20${selectedProduct.id})%20in%20Size:%20${selectedSize}.%20Please%20provide%20MOQ%20and%20quotation.`;
 
   return (
     <div 
@@ -146,16 +145,19 @@ export default function ProductDetailModal() {
               {selectedProduct.material}
             </div>
 
-            {/* Price */}
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '1.6rem', paddingBottom: '1.2rem', borderBottom: '1px solid #eee' }}>
-              <span style={{ fontSize: '1.6rem', fontWeight: '700', color: '#000' }}>
-                {formatPrice(selectedProduct.price, currency)}
-              </span>
-              {selectedProduct.compare_at_price && (
-                <span style={{ fontSize: '1rem', color: '#888', textDecoration: 'line-through' }}>
-                  {formatPrice(selectedProduct.compare_at_price, currency)}
+            {/* Wholesale Pricing & MOQ Notice */}
+            <div style={{ marginBottom: '1.5rem', paddingBottom: '1.2rem', borderBottom: '1px solid #eee' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.4rem' }}>
+                <span style={{ fontSize: '1.35rem', fontWeight: '700', color: '#000' }}>
+                  Pricing on Request
                 </span>
-              )}
+                <span style={{ fontSize: '0.68rem', background: '#000000', color: '#ffffff', padding: '0.2rem 0.5rem', fontWeight: '700', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                  B2B & Wholesale
+                </span>
+              </div>
+              <div style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
+                Direct factory manufacturing quote tailored to your order volume, material grading, and private label branding.
+              </div>
             </div>
 
             <p style={{ color: '#444', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1.8rem' }}>
@@ -222,17 +224,19 @@ export default function ProductDetailModal() {
             )}
           </div>
 
-          {/* Action Buttons */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginTop: '1.5rem' }}>
+          {/* Action Buttons: Inquiry & RFQ */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '1.5rem' }}>
             <button
               onClick={() => {
-                addToCart(selectedProduct, selectedSize, selectedColor, quantity);
+                const prod = selectedProduct;
                 setSelectedProduct(null);
+                openQuoteModal(prod);
               }}
               className="btn-zegna-primary"
-              style={{ width: '100%', padding: '1.1rem' }}
+              style={{ width: '100%', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.55rem' }}
             >
-              Add to Shopping Bag
+              <Send size={16} />
+              <span>Request Wholesale Quotation</span>
             </button>
 
             <a 
@@ -240,11 +244,35 @@ export default function ProductDetailModal() {
               target="_blank"
               rel="noopener noreferrer"
               className="btn-zegna-outline"
-              style={{ width: '100%', padding: '0.8rem', fontSize: '0.78rem' }}
+              style={{ width: '100%', padding: '0.85rem', fontSize: '0.78rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderColor: '#25D366', color: '#128C7E', fontWeight: '600' }}
             >
-              <MessageSquare size={15} />
-              Inquire via WhatsApp ({BRAND_INFO.phone})
+              <MessageSquare size={16} color="#25D366" />
+              <span>Direct WhatsApp Inquiry ({BRAND_INFO.phone})</span>
             </a>
+
+            <button
+              onClick={() => {
+                addToCart(selectedProduct, selectedSize, selectedColor, quantity);
+                setSelectedProduct(null);
+              }}
+              style={{ 
+                background: '#f8f8f8', 
+                border: '1px solid #e2e2e2', 
+                padding: '0.75rem', 
+                fontSize: '0.76rem', 
+                color: '#333333', 
+                cursor: 'pointer', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                gap: '0.4rem', 
+                textTransform: 'uppercase', 
+                letterSpacing: '0.08em', 
+                fontWeight: '600' 
+              }}
+            >
+              <span>+ Add to Bulk RFQ List</span>
+            </button>
           </div>
 
         </div>

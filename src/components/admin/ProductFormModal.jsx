@@ -159,14 +159,14 @@ export default function ProductFormModal({ product, isOpen, onClose, onSave }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.price || !formData.category) {
-      alert('Please fill out Title, Category, and Price.');
+    if (!formData.title || !formData.category) {
+      alert('Please fill out Title and Category.');
       return;
     }
 
     const payload = {
       ...formData,
-      price: Number(formData.price),
+      price: formData.price ? Number(formData.price) : 0,
       compare_at_price: formData.compare_at_price ? Number(formData.compare_at_price) : null,
       stock: Number(formData.stock || 0),
       images: formData.images.filter(img => img.trim().length > 0),
@@ -288,14 +288,15 @@ export default function ProductFormModal({ product, isOpen, onClose, onSave }) {
             {/* Price, Compare Price, Stock */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#333', marginBottom: '0.5rem' }}>Price (USD $) *</label>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#333', marginBottom: '0.5rem' }}>
+                  Target FOB Price (Optional)
+                </label>
                 <input
                   type="number"
                   step="0.01"
-                  required
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                  placeholder="890"
+                  placeholder="Optional internal ref"
                   style={{ width: '100%', padding: '0.75rem', border: '1px solid #ddd', borderRadius: '4px', fontSize: '0.9rem', outline: 'none' }}
                 />
               </div>

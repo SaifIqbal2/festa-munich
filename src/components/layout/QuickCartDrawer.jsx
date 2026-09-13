@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useShop } from '../../context/ShopContext';
-import { formatPrice } from '../../utils/helpers';
-import { X, Trash2, Plus, Minus, ShieldCheck, Gift, ArrowRight } from 'lucide-react';
+import { BRAND_INFO } from '../../data/initialProducts';
+import { X, Trash2, Plus, Minus, ShieldCheck, MessageSquare, Send, ArrowRight } from 'lucide-react';
 
 export default function QuickCartDrawer() {
   const { 
@@ -9,22 +9,48 @@ export default function QuickCartDrawer() {
     isCartOpen, 
     setIsCartOpen, 
     removeFromCart, 
-    updateCartQuantity, 
-    cartSubtotal, 
-    currency,
-    setIsCheckoutOpen 
+    updateCartQuantity,
+    openQuoteModal 
   } = useShop();
 
-  const [includeGiftWrap, setIncludeGiftWrap] = useState(false);
-
   if (!isCartOpen) return null;
+
+  const generateBulkWhatsAppUrl = () => {
+    const itemsSummary = cart.map((item, index) => 
+      `${index + 1}. *${item.title}* | Size: ${item.selectedSize} | Color: ${item.selectedColor} | Requested Batch: ${item.quantity}`
+    ).join('\n');
+
+    const text = `*FESTA MUNICH — MULTI-ITEM WHOLESALE RFQ*
+----------------------------------
+*Selected Garments for Bulk Quotation:*
+${itemsSummary}
+
+*Total Garment Types:* ${cart.length}
+*Total Units Requested:* ${cart.reduce((s, i) => s + i.quantity, 0)}
+
+Please provide FOB export pricing, sampling timeframe, and private label customization details.
+----------------------------------
+Inquiry from festamunich.com`;
+
+    return `https://wa.me/923277551063?text=${encodeURIComponent(text)}`;
+  };
+
+  const handleOpenGeneralQuote = () => {
+    setIsCartOpen(false);
+    openQuoteModal({
+      title: `Bulk Inquiry (${cart.length} Garments Selected)`,
+      id: 'bulk-rfq',
+      category: 'Consolidated Bulk Order',
+      material: cart.map(i => i.title).join(', ')
+    });
+  };
 
   return (
     <div 
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backgroundColor: 'rgba(0, 0, 0, 0.65)',
         backdropFilter: 'blur(4px)',
         zIndex: 2000,
         display: 'flex',
@@ -36,7 +62,7 @@ export default function QuickCartDrawer() {
       <div 
         style={{
           width: '100%',
-          maxWidth: '460px',
+          maxWidth: '480px',
           height: '100%',
           backgroundColor: '#ffffff',
           display: 'flex',
@@ -52,40 +78,43 @@ export default function QuickCartDrawer() {
             borderBottom: '1px solid #e5e5e5',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            backgroundColor: '#fafafa'
           }}
         >
           <div>
-            <div style={{ fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#777', fontWeight: '600' }}>
-              SHOPPING BAG
+            <div style={{ fontSize: '0.72rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#777', fontWeight: '600' }}>
+              WHOLESALE & B2B SELECTION
             </div>
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: '#000', marginTop: '0.2rem' }}>
-              Your Selection ({cart.reduce((s, i) => s + i.quantity, 0)})
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', color: '#000', margin: '0.2rem 0 0 0', fontWeight: '400' }}>
+              RFQ & Quotation List ({cart.length})
             </h3>
           </div>
           <button 
             onClick={() => setIsCartOpen(false)}
             style={{ background: 'none', border: 'none', color: '#000', cursor: 'pointer', padding: '0.4rem' }}
+            aria-label="Close RFQ Drawer"
           >
             <X size={22} />
           </button>
         </div>
 
-        {/* Cart Item List */}
+        {/* Item List */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '1.8rem' }}>
           {cart.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '4rem 1rem', color: '#777' }}>
-              <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: '#000', marginBottom: '0.5rem' }}>
-                Your Shopping Bag is Empty
+              <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: '#000', marginBottom: '0.6rem', fontWeight: '400' }}>
+                Your Quotation List is Empty
               </h4>
-              <p style={{ fontSize: '0.88rem', color: '#666', marginBottom: '2rem' }}>
-                Explore the latest Autumn / Winter leather & cashmere collection.
+              <p style={{ fontSize: '0.88rem', color: '#666', marginBottom: '2rem', lineHeight: 1.6 }}>
+                Browse our atelier leather & cashmere catalog. Add garments to this list to request custom pricing, tech pack sampling, or bulk production.
               </p>
               <button 
                 onClick={() => setIsCartOpen(false)}
                 className="btn-zegna-primary"
+                style={{ padding: '0.9rem 1.8rem' }}
               >
-                Discover Collection
+                Explore Catalog
               </button>
             </div>
           ) : (
@@ -103,7 +132,7 @@ export default function QuickCartDrawer() {
                 >
                   <div 
                     style={{
-                      height: '100px',
+                      height: '95px',
                       backgroundColor: '#f5f5f5',
                       overflow: 'hidden'
                     }}
@@ -118,12 +147,12 @@ export default function QuickCartDrawer() {
                   <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                        <h4 style={{ fontSize: '0.92rem', fontWeight: '500', color: '#000', lineHeight: 1.3 }}>
+                        <h4 style={{ fontSize: '0.92rem', fontWeight: '600', color: '#000', lineHeight: 1.3, margin: 0 }}>
                           {item.title}
                         </h4>
                         <button
                           onClick={() => removeFromCart(item.cartItemId)}
-                          style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer' }}
+                          style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', padding: '0.2rem' }}
                           title="Remove item"
                         >
                           <Trash2 size={15} />
@@ -151,7 +180,7 @@ export default function QuickCartDrawer() {
                         >
                           <Minus size={12} />
                         </button>
-                        <span style={{ fontSize: '0.8rem', fontWeight: '600', minWidth: '24px', textAlign: 'center' }}>
+                        <span style={{ fontSize: '0.8rem', fontWeight: '600', minWidth: '28px', textAlign: 'center' }}>
                           {item.quantity}
                         </span>
                         <button
@@ -162,42 +191,13 @@ export default function QuickCartDrawer() {
                         </button>
                       </div>
 
-                      <div style={{ fontSize: '1rem', color: '#000', fontWeight: '700' }}>
-                        {formatPrice(item.price * item.quantity, currency)}
+                      <div style={{ fontSize: '0.74rem', color: '#777', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Wholesale MOQ
                       </div>
                     </div>
                   </div>
                 </div>
               ))}
-
-              <div 
-                style={{
-                  background: '#fafafa',
-                  border: '1px dashed #d5d5d5',
-                  padding: '1rem',
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '0.8rem',
-                  cursor: 'pointer'
-                }}
-                onClick={() => setIncludeGiftWrap(!includeGiftWrap)}
-              >
-                <input 
-                  type="checkbox" 
-                  checked={includeGiftWrap} 
-                  onChange={() => {}}
-                  style={{ marginTop: '0.2rem', accentColor: '#000' }}
-                />
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.82rem', fontWeight: '600', color: '#000' }}>
-                    <Gift size={14} />
-                    Complimentary Monogram Box & Suit Cover
-                  </div>
-                  <div style={{ fontSize: '0.74rem', color: '#777', marginTop: '0.2rem' }}>
-                    Includes Festa Munich wooden bespoke hanger and protective canvas bag.
-                  </div>
-                </div>
-              </div>
             </div>
           )}
         </div>
@@ -206,36 +206,37 @@ export default function QuickCartDrawer() {
         {cart.length > 0 && (
           <div 
             style={{
-              padding: '1.8rem 2rem',
+              padding: '1.6rem 2rem',
               borderTop: '1px solid #e5e5e5',
               backgroundColor: '#fafafa'
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.4rem' }}>
-              <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#666' }}>
-                Subtotal
-              </span>
-              <span style={{ fontSize: '1.4rem', fontWeight: '700', color: '#000' }}>
-                {formatPrice(cartSubtotal, currency)}
-              </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.76rem', color: '#555', marginBottom: '1.2rem', lineHeight: 1.4 }}>
+              <ShieldCheck size={16} color="#000" style={{ flexShrink: 0 }} />
+              <span>Direct factory manufacturing in Sialkot, Pakistan with custom private labeling and global FOB/DDP export.</span>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', color: '#666', marginBottom: '1.4rem' }}>
-              <ShieldCheck size={14} color="#000" />
-              <span>Complimentary insured global express delivery.</span>
-            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+              <button
+                onClick={handleOpenGeneralQuote}
+                className="btn-zegna-primary"
+                style={{ width: '100%', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+              >
+                <Send size={15} />
+                <span>Submit Quotation Request ({cart.length} Items)</span>
+              </button>
 
-            <button
-              onClick={() => {
-                setIsCartOpen(false);
-                setIsCheckoutOpen(true);
-              }}
-              className="btn-zegna-primary"
-              style={{ width: '100%', padding: '1.1rem' }}
-            >
-              Proceed to Checkout
-              <ArrowRight size={16} />
-            </button>
+              <a
+                href={generateBulkWhatsAppUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-zegna-outline"
+                style={{ width: '100%', padding: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderColor: '#25D366', color: '#128C7E', fontSize: '0.78rem', fontWeight: '600' }}
+              >
+                <MessageSquare size={16} color="#25D366" />
+                <span>Send Bulk RFQ on WhatsApp ({BRAND_INFO.phone})</span>
+              </a>
+            </div>
           </div>
         )}
       </div>
