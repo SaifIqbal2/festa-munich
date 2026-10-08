@@ -24,7 +24,6 @@ export default function HeroBanner({ onExploreCatalog }) {
     heading: 'THE FALL CLOSET',
     subtitle: 'Dressing for fall starts at home, where every piece carries intention.',
     buttonText: 'Discover the Collection',
-    image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=2000&auto=format&fit=crop'
   };
 
   return (

@@ -234,6 +234,20 @@ export const BRAND_INFO = {
   phone: "+92 327 7551063",
   whatsapp: "+92 327 7551063",
   address: "Malkay Kalan, Marala Road, Sialkot — Pakistan",
+  offices: [
+    {
+      name: "Festa Munich Atelier",
+      address: "Malkay Kalan, Marala Road, Sialkot — Pakistan",
+      email: "festamunich@gmail.com",
+      phone: "+92 327 7551063"
+    },
+    {
+      name: "Garman Office",
+      address: "Eversbuschstr. 3, 80999 München, Germany",
+      email: "stark4004@yahoo.com",
+      phone: "+49 178 1844380"
+    }
+  ],
   whatsappLink: "https://wa.me/923277551063?text=Hello%20Festa%20Munich,%20I%20am%20interested%20in%20your%20bespoke%20leather%20and%20textile%20garments.",
   heroVideo: "https://assets.mixkit.co/videos/preview/mixkit-tailor-working-on-a-suit-jacket-41133-large.mp4",
   atelierBanner: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1800&auto=format&fit=crop"

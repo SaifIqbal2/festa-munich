@@ -43,19 +43,30 @@ export default function Footer({ onNavigateSection }) {
               Supreme mastery in bespoke leather outerwear, wholesale manufacturing, and luxury private label tailoring.
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.82rem', color: '#cccccc' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <MapPin size={15} color="#ffffff" />
-                <span>{BRAND_INFO.address}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Phone size={15} color="#ffffff" />
-                <span>{BRAND_INFO.phone}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Mail size={15} color="#ffffff" />
-                <span>{BRAND_INFO.email}</span>
-              </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', fontSize: '0.82rem', color: '#cccccc' }}>
+              {BRAND_INFO.offices.map((office) => (
+                <div key={office.name} style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                  <div style={{ color: '#ffffff', fontSize: '0.72rem', fontWeight: '700', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                    {office.name}
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                    <MapPin size={15} color="#ffffff" style={{ flexShrink: 0, marginTop: '0.15rem' }} />
+                    <span>{office.address}</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Phone size={15} color="#ffffff" />
+                    <a href={`tel:${office.phone.replace(/\s/g, '')}`} style={{ color: '#cccccc', textDecoration: 'none' }}>
+                      {office.phone}
+                    </a>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Mail size={15} color="#ffffff" />
+                    <a href={`mailto:${office.email}`} style={{ color: '#cccccc', textDecoration: 'none' }}>
+                      {office.email}
+                    </a>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -208,7 +219,7 @@ export default function Footer({ onNavigateSection }) {
         {/* Bottom Sub-bar */}
         <div style={{ borderTop: '1px solid #222222', padding: '1.5rem 0', fontSize: '0.75rem', color: '#777777', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            © {new Date().getFullYear()} FESTA MUNICH — Sialkot, Pakistan. All Rights Reserved.
+            © {new Date().getFullYear()} FESTA MUNICH — Sialkot & Munich. All Rights Reserved.
           </div>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
             <span style={{ color: '#555' }}>Privacy Policy</span>

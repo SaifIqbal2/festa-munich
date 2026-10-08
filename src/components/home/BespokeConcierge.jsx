@@ -79,31 +79,36 @@ export default function BespokeConcierge() {
               Direct Atelier Contacts
             </h4>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.88rem' }}>
-              <div>
-                <div style={{ color: '#777', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                  Atelier Address
-                </div>
-                <div style={{ color: '#000', fontWeight: '500', marginTop: '0.2rem' }}>{BRAND_INFO.address}</div>
-              </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', fontSize: '0.88rem' }}>
+              {BRAND_INFO.offices.map((office) => (
+                <div key={office.name} style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                  <div style={{ color: '#000', fontWeight: '600', fontSize: '0.95rem' }}>{office.name}</div>
+                  <div>
+                    <div style={{ color: '#777', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                      Office Address
+                    </div>
+                    <div style={{ color: '#000', fontWeight: '500', marginTop: '0.2rem' }}>{office.address}</div>
+                  </div>
 
-              <div>
-                <div style={{ color: '#777', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                  Official Email
-                </div>
-                <div style={{ color: '#000', fontWeight: '500', marginTop: '0.2rem' }}>{BRAND_INFO.email}</div>
-              </div>
+                  <div>
+                    <div style={{ color: '#777', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                      Official Email
+                    </div>
+                    <a href={`mailto:${office.email}`} style={{ display: 'block', color: '#000', fontWeight: '500', marginTop: '0.2rem', textDecoration: 'none' }}>
+                      {office.email}
+                    </a>
+                  </div>
 
-              <div>
-                <div style={{ color: '#777', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                  WhatsApp / Phone
+                  <div>
+                    <div style={{ color: '#777', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                      Phone
+                    </div>
+                    <a href={`tel:${office.phone.replace(/\s/g, '')}`} style={{ display: 'block', color: '#000', fontWeight: '500', marginTop: '0.2rem', textDecoration: 'none' }}>
+                      {office.phone}
+                    </a>
+                  </div>
                 </div>
-                <div style={{ color: '#000', fontWeight: '500', marginTop: '0.2rem' }}>
-                  <a href={BRAND_INFO.whatsappLink} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
-                    {BRAND_INFO.whatsapp}
-                  </a>
-                </div>
-              </div>
+              ))}
 
               <div>
                 <div style={{ color: '#777', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
